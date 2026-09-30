@@ -1,0 +1,121 @@
+from pathlib import Path
+import zipfile, textwrap
+
+root = Path("/mnt/data/Lumira")
+root.mkdir(exist_ok=True)
+
+files = {
+"index.html": """<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lumira — Healthcare Door To Door</title>
+  <meta name="description" content="Lumira — Healthcare Door To Door. One Step Towards Humanity.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="logo">✚</span><span>Lumira</span></div>
+  <button class="menu" onclick="toggleMenu()">☰</button>
+  <nav id="nav">
+    <a href="#home">Home</a><a href="#services">Services</a><a href="#about">About</a>
+  </nav>
+</header>
+
+<main>
+<section id="home" class="hero">
+  <div>
+    <p class="eyebrow">ONE STEP TOWARDS HUMANITY</p>
+    <h1>Healthcare<br><span>Door To Door.</span></h1>
+    <p class="lead">A simple healthcare platform connecting patients with doctors, labs, pharmacies, ambulances, SOS services and nursing homes.</p>
+    <div class="actions">
+      <a class="btn primary" href="#portals">Explore Lumira</a>
+      <a class="btn secondary" href="#about">Learn more</a>
+    </div>
+  </div>
+  <div class="hero-card">
+    <div class="pulse">✚</div>
+    <h3>Care, connected.</h3>
+    <p>Find the right healthcare service from one place.</p>
+  </div>
+</section>
+
+<section id="portals" class="section">
+  <p class="eyebrow">LUMIRA PORTALS</p>
+  <h2>Choose your healthcare portal</h2>
+  <div class="grid">
+    <button class="card" onclick="openPortal('Doctor')"><b>🩺 Doctor</b><span>Consult and connect with doctors</span></button>
+    <button class="card" onclick="openPortal('Patient')"><b>👤 Patient</b><span>Manage your healthcare journey</span></button>
+    <button class="card" onclick="openPortal('Lab')"><b>🧪 Lab</b><span>Diagnostics and reports</span></button>
+    <button class="card" onclick="openPortal('Pharmacy')"><b>💊 Pharmacy</b><span>Medicines and pharmacy services</span></button>
+    <button class="card" onclick="openPortal('Ambulance')"><b>🚑 Ambulance</b><span>Emergency transport access</span></button>
+    <button class="card sos" onclick="openPortal('SOS Service')"><b>🆘 SOS Service</b><span>Emergency assistance portal</span></button>
+    <button class="card" onclick="openPortal('Nursing Home')"><b>🏥 Nursing Home</b><span>Care facility services</span></button>
+  </div>
+</section>
+
+<section id="services" class="section alt">
+  <p class="eyebrow">SERVICES</p>
+  <h2>One platform, multiple needs.</h2>
+  <div class="features">
+    <div><strong>24/7 Access</strong><p>Designed for convenient access to healthcare services.</p></div>
+    <div><strong>Connected Care</strong><p>Bring patients and healthcare providers together.</p></div>
+    <div><strong>Emergency Ready</strong><p>Keep emergency pathways easy to find.</p></div>
+  </div>
+</section>
+
+<section id="about" class="section about">
+  <p class="eyebrow">ABOUT LUMIRA</p>
+  <h2>Healthcare Door To Door</h2>
+  <p>Lumira is a healthcare super-app concept designed to bring essential healthcare services together in one accessible digital platform.</p>
+</section>
+</main>
+
+<footer>© 2026 Lumira · One Step Towards Humanity</footer>
+<div id="toast" class="toast"></div>
+<script src="script.js"></script>
+</body>
+</html>""",
+
+"style.css": """*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,Arial,sans-serif;color:#102033;background:#f7fbff}.topbar{height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 7%;background:#fff;position:sticky;top:0;z-index:10;border-bottom:1px solid #e7eef5}.brand{display:flex;gap:10px;align-items:center;font-size:25px;font-weight:800;color:#087f8c}.logo{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;background:#087f8c;color:white}.topbar nav{display:flex;gap:25px}.topbar a{color:#284054;text-decoration:none;font-weight:600}.menu{display:none;background:none;border:0;font-size:24px}.hero{min-height:650px;padding:80px 7%;display:grid;grid-template-columns:1.3fr .7fr;gap:50px;align-items:center;background:linear-gradient(135deg,#ecfcff,#fff)}.eyebrow{letter-spacing:2px;font-size:12px;font-weight:800;color:#087f8c}.hero h1{font-size:clamp(48px,7vw,86px);line-height:.98;margin:15px 0}.hero h1 span{color:#087f8c}.lead{max-width:650px;font-size:19px;line-height:1.7;color:#536779}.actions{display:flex;gap:14px;margin-top:30px}.btn{padding:14px 22px;border-radius:12px;text-decoration:none;font-weight:800}.primary{background:#087f8c;color:white}.secondary{background:white;color:#087f8c;border:1px solid #bcdce0}.hero-card{background:#087f8c;color:white;padding:45px;border-radius:28px;box-shadow:0 25px 70px #087f8c35}.pulse{font-size:70px;margin-bottom:20px}.hero-card h3{font-size:30px;margin:0 0 10px}.section{padding:85px 7%}.section h2{font-size:42px;margin:8px 0 35px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px}.card{border:1px solid #dce9ef;background:#fff;border-radius:18px;padding:24px;text-align:left;cursor:pointer;transition:.2s}.card:hover{transform:translateY(-4px);box-shadow:0 12px 35px #1233  }.card b{display:block;font-size:20px;margin-bottom:9px}.card span{color:#66798a;line-height:1.5}.sos{border-color:#ffc7c7}.alt{background:#eef9fa}.features{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.features div{background:#fff;padding:28px;border-radius:18px}.features strong{font-size:21px}.features p,.about p{color:#607386;line-height:1.7}.about{max-width:900px}.about p{font-size:18px}footer{text-align:center;padding:30px;background:#102033;color:#d9e5ed}.toast{position:fixed;bottom:25px;left:50%;transform:translate(-50%,120px);background:#102033;color:white;padding:15px 22px;border-radius:12px;transition:.3s}.toast.show{transform:translate(-50%,0)}@media(max-width:700px){.topbar nav{display:none}.menu{display:block}.hero{grid-template-columns:1fr;padding-top:55px}.hero-card{display:none}.features{grid-template-columns:1fr}.section h2{font-size:34px}}""",
+
+"script.js": """function openPortal(name){const t=document.getElementById('toast');t.textContent=name+' portal selected — backend/login can be connected next.';t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800)}function toggleMenu(){document.getElementById('nav').classList.toggle('open')}""",
+
+"README.md": """# Lumira
+
+**Healthcare Door To Door**  
+*One Step Towards Humanity*
+
+A starter front-end for the Lumira healthcare platform.
+
+## 7 portals
+1. Doctor
+2. Patient
+3. Lab
+4. Pharmacy
+5. Ambulance
+6. SOS Service
+7. Nursing Home
+
+## Run
+Open `index.html` in a browser.
+
+## GitHub Pages
+Upload `index.html`, `style.css`, and `script.js` to your repository and configure Pages to deploy from the branch containing these files.
+
+This starter is a front-end prototype. Authentication, databases, payments, medical records, and emergency integrations require a secure backend and appropriate compliance/security work.
+"""
+}
+
+for name, content in files.items():
+    (root/name).write_text(content, encoding="utf-8")
+
+zip_path = Path("/mnt/data/Lumira-healthcare-starter.zip")
+with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as z:
+    for p in root.rglob("*"):
+        if p.is_file():
+            z.write(p, p.relative_to(root.parent))
+
+print(f"Created: {zip_path}")
+print("Files:", ", ".join(files))
