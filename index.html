@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lumira — Healthcare Door to Door</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="brand">
+      <div class="logo">L</div>
+      <div>
+        <h1>Lumira</h1>
+        <p>Healthcare Door to Door</p>
+      </div>
+    </div>
+    <button class="emergency" onclick="showEmergency()">SOS</button>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <p class="eyebrow">ONE STEP TOWARDS HUMANITY</p>
+      <h2>Your healthcare, connected.</h2>
+      <p>Select a portal to continue.</p>
+    </section>
+
+    <section class="portal-grid">
+      <button class="portal" onclick="selectPortal('Doctor')">👨‍⚕️<span>Doctor</span><small>Consult & appointments</small></button>
+      <button class="portal" onclick="selectPortal('Patient')">🧑‍💼<span>Patient</span><small>Health & care</small></button>
+      <button class="portal" onclick="selectPortal('Lab')">🧪<span>Lab</span><small>Tests & reports</small></button>
+      <button class="portal" onclick="selectPortal('Pharmacy')">💊<span>Pharmacy</span><small>Medicines</small></button>
+      <button class="portal" onclick="selectPortal('Ambulance')">🚑<span>Ambulance</span><small>Emergency transport</small></button>
+      <button class="portal" onclick="selectPortal('SOS Service')">🆘<span>SOS Service</span><small>Emergency support</small></button>
+      <button class="portal" onclick="selectPortal('Nursing Home')">🏥<span>Nursing Home</span><small>Care facilities</small></button>
+    </section>
+  </main>
+
+  <div id="message" class="message"></div>
+  <script src="script.js"></script>
+</body>
+</html>
